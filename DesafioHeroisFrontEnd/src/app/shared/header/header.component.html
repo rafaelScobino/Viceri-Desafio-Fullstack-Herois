@@ -1,0 +1,32 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center" routerLink="/">
+      <i class="bi bi-shield-shaded me-2 fs-3 text-primary"></i>
+      <span class="fw-bold tracking-tight">HERO<span class="text-primary">MANAGER</span></span>
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto align-items-center">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+            Home
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/herois" routerLinkActive="active">
+            Listagem
+          </a>
+        </li>
+        <li class="nav-item ms-lg-3">
+          <a class="btn btn-primary btn-sm px-3" routerLink="heroi/cadastro">
+            <i class="bi bi-plus-lg"></i> Novo Herói
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

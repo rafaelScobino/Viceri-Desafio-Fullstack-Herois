@@ -1,0 +1,46 @@
+@HeroisAPI_HostAddress = http://localhost:5134
+
+### Listar todos os heróis
+GET {{HeroisAPI_HostAddress}}/api/herois
+Accept: application/json
+
+### Buscar herói por nome 
+GET {{HeroisAPI_HostAddress}}/api/herois?nome=batman
+Accept: application/json
+
+### Buscar por ID 
+GET {{HeroisAPI_HostAddress}}/api/herois/1
+Accept: application/json
+
+### Criar um novo herói (POST)
+POST {{HeroisAPI_HostAddress}}/api/herois
+Content-Type: application/json
+
+{
+  "nome": "Diana Prince",
+  "nomeHeroi": "Mulher Maravilha",
+  "dataNascimento": "1941-10-21",
+  "altura": 1.78,
+  "peso": 75.0,
+  "superpoderesIds": [1, 2]
+}
+
+### Atualizar um herói (PUT)
+PUT {{HeroisAPI_HostAddress}}/api/herois/1
+Content-Type: application/json
+
+{
+  "nome": "Clark Joseph Kent",
+  "nomeHeroi": "Superman",
+  "dataNascimento": "1938-04-18",
+  "altura": 1.91,
+  "peso": 105.0,
+  "superpoderesIds": [1, 2, 3]
+}
+
+### Deletar um herói
+DELETE {{HeroisAPI_HostAddress}}/api/herois/1
+
+### Listar todos os Superpoderes 
+GET {{HeroisAPI_HostAddress}}/api/superpoderes
+Accept: application/json

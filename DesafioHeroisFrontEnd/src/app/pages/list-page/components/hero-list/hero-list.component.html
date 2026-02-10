@@ -1,0 +1,36 @@
+<div class="table-responsive shadow-sm rounded">
+  <table class="table table-hover align-middle bg-white">
+    <thead class="table-dark">
+      <tr>
+        <th>Herói</th>
+        <th>Nome Real</th>
+        <th>Poderes</th>
+        <th class="text-center">Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let hero of heroes">
+  <td><strong>{{ hero.heroName }}</strong></td>
+  <td>{{ hero.name }}</td>
+  <td>
+    <span *ngFor="let p of hero.heroPowers" class="badge bg-info text-dark me-1">
+      {{ p.name }}
+    </span>
+  </td>
+  <td class="text-center">
+    <button class="btn btn-sm btn-outline-secondary me-2" title="Visualizar Detalhes" (click)="heroDetail(hero.id)">
+      <i class="bi bi-eye"></i>
+    </button>
+
+    <button class="btn btn-sm btn-outline-primary me-2" title="Editar Herói">
+      <i class="bi bi-pencil"></i>
+    </button>
+
+    <button class="btn btn-sm btn-outline-danger" title="Excluir Herói">
+      <i class="bi bi-trash"></i>
+    </button>
+  </td>
+</tr>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,57 @@
+<form [formGroup]="heroForm">
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <label class="form-label fw-bold small text-uppercase">Nome Real</label>
+      <input type="text" formControlName="name" class="form-control" placeholder="Bruce Wayne">
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <label class="form-label fw-bold small text-uppercase">Nome de Herói</label>
+      <input type="text" formControlName="heroName" class="form-control" placeholder="Batman">
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4 mb-3">
+      <label class="form-label fw-bold small text-uppercase">Nascimento</label>
+      <input type="date" formControlName="birth" class="form-control">
+    </div>
+
+    <div class="col-md-4 mb-3">
+      <label class="form-label fw-bold small text-uppercase">Altura (m)</label>
+      <input type="number" step="0.01" formControlName="height" class="form-control" placeholder="0.00">
+    </div>
+
+    <div class="col-md-4 mb-3">
+      <label class="form-label fw-bold small text-uppercase">Peso (kg)</label>
+      <input type="number" step="0.1" formControlName="weight" class="form-control" placeholder="0.0">
+    </div>
+  </div>
+
+ <div class="mb-3">
+    <label class="form-label fw-bold small text-uppercase d-block mb-3">
+      Superpoderes <span class="text-primary">*</span>
+    </label>
+
+    <div class="d-flex flex-wrap gap-2 p-3 border rounded bg-light" style="min-height: 100px;">
+      <button
+        type="button"
+        *ngFor="let power of powerList"
+        (click)="togglePower(power.id)"
+        [ngClass]="isSelected(power.id) ? 'btn-primary' : 'btn-outline-secondary'"
+        class="btn btn-sm rounded-pill px-3 transition-all">
+
+        <i class="bi" [ngClass]="isSelected(power.id) ? 'bi-check-circle-fill' : 'bi-plus-circle'"></i>
+        {{ power.name }}
+      </button>
+
+      <div *ngIf="heroForm.value.powers.length === 0" class="text-muted small w-100 text-center py-2">
+        Selecione pelo menos um poder acima.
+      </div>
+    </div>
+
+    <div *ngIf="heroForm.get('powers')?.invalid && heroForm.get('powers')?.touched" class="text-danger small mt-2">
+      Selecione ao menos um superpoder.
+    </div>
+  </div>
+</form>

@@ -1,0 +1,7 @@
+.transition-all {
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-primary {
+  box-shadow: 0 4px 6px rgba(13, 110, 253, 0.2);
+}

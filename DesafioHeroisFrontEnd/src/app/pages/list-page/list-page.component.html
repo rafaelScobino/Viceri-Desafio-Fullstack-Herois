@@ -1,0 +1,46 @@
+<div class="container py-4">
+  <h2 class="mb-4"><i class="bi bi-shield-shaded"></i> Esquadrão de Heróis</h2>
+
+  <app-hero-list-filter
+    #heroFilter
+    [powers]="powerList"
+    (filterEvent)="filter($event)">
+  </app-hero-list-filter>
+
+  <div class="mt-4">
+    <ng-container *ngIf="heroes && heroes.length > 0; else noResult">
+      <app-hero-list
+        [heroes]="heroes"
+        (onViewHero)="heroDetail($event)">
+      </app-hero-list>
+    </ng-container>
+  </div>
+
+  <ng-template #noResult>
+    <div class="d-flex justify-content-center align-items-center mt-5">
+      <div class="card shadow-sm border-0 text-center p-5" style="max-width: 550px;">
+        <div class="card-body">
+          <div class="mb-4">
+            <i class="bi bi-person-x fs-1 text-muted"></i>
+          </div>
+          <h3 class="fw-bold h4">Nenhum herói encontrado</h3>
+          <p class="text-muted">
+            Não encontramos nenhum herói, tente cadastrar um novo ou reiniciar página.
+          </p>
+
+          <div class="d-flex gap-2 justify-content-center mt-4">
+            <!-- <button type="button" class="btn btn-outline-secondary px-4" (click)="hasResult()">
+              Limpar Filtros
+            </button> -->
+
+            <a routerLink="/heroi/cadastro" class="btn btn-primary px-4">
+              <i class="bi bi-plus-lg me-1"></i> Novo Herói
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>
+
+<app-hero-modal #HeroModalComponent></app-hero-modal>

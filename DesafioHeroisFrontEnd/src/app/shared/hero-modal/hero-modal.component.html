@@ -1,0 +1,18 @@
+<ng-template #heroTemplate>
+      <div class="modal-content border-0 shadow-lg">
+    <div class="modal-header bg-dark text-white">
+      <h5 class="modal-title">
+        <i class="bi bi-info-circle me-2"></i>Ficha do Herói
+      </h5>
+      <button type="button" class="btn-close btn-close-white" (click)="close()" aria-label="Close"></button>
+    </div>
+
+    <div class="modal-body p-0">
+      <app-hero-card *ngIf="hero" [hero]="hero"></app-hero-card>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="close()">Fechar</button>
+    </div>
+  </div>
+</ng-template>
