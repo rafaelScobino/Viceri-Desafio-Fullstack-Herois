@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { FeedbackModalComponent } from './feedback-modal.component';
+import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class FeedbackModalService {
@@ -18,6 +19,25 @@ export class FeedbackModalService {
 
   showWarning(msg: string) {
     this.open('Aviso', msg, 'bi bi-exclamation-triangle-fill', 'text-warning', 'btn-warning');
+  }
+
+  showConfirm(title: string, msg: string): Observable<boolean> {
+    const initialState = {
+      title,
+      message: msg,
+      icon: 'bi bi-question-circle-fill',
+      textColor: 'text-primary',
+      btnClass: 'btn-primary',
+      isConfirm: true // Nova flag para mostrar o botão "Cancelar"
+    };
+
+    this.bsModalRef = this.modalService.show(FeedbackModalComponent, {
+      initialState,
+      class: 'modal-dialog-centered'
+    });
+
+   const modalComponent = this.bsModalRef.content as FeedbackModalComponent;
+  return modalComponent.confirmResult.asObservable();
   }
 
   private open(title: string, message: string, icon: string, textColor: string, btnClass: string) {

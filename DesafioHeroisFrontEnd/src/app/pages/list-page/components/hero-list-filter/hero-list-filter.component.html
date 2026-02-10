@@ -12,9 +12,9 @@
 
       <div class="col-md-4">
         <label class="form-label fw-bold text-secondary">Superpoder</label>
-        <select class="form-select" [(ngModel)]="filters.powerId">
-          <option [value]="0">Todos os poderes</option>
-          <option *ngFor="let p of powers" [value]="p.id">{{ p.nome }}</option>
+        <select class="form-select" [(ngModel)]="filters.poderId">
+          <option [value]="null">Todos os poderes</option>
+          <option *ngFor="let p of powers" [value]="p.id">{{ p.superpoder }}</option>
         </select>
       </div>
 

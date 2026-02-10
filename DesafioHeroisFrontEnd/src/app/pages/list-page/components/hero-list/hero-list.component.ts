@@ -12,15 +12,23 @@ import { Heroi } from '../../../../models/heroi';
 })
 export class HeroListComponent {
   @Input() heroes?: Heroi[]
-  @Output() onViewHero = new EventEmitter<any>();
+@Output() onView = new EventEmitter<number>();
+  @Output() onEdit = new EventEmitter<number>();
+  @Output() onDelete = new EventEmitter<number>();
 
-  constructor(private feedbackService: FeedbackModalService){
+  constructor(){
 
   }
 
+ heroDetail(id?: number) {
+    if (id) this.onView.emit(id);
+  }
 
-  heroDetail(heroId?: number) {
-    if(!heroId) return
-    this.onViewHero.emit(heroId);
+  editHero(id?: number) {
+    if (id) this.onEdit.emit(id);
+  }
+
+  deleteHero(id?: number) {
+    if (id) this.onDelete.emit(id);
   }
 }

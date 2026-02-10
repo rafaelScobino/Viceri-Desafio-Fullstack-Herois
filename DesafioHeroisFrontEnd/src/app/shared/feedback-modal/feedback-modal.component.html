@@ -3,7 +3,7 @@
     <h5 class="modal-title fw-bold" [ngClass]="textColor">
       <i [class]="icon"></i> {{ title }}
     </h5>
-    <button type="button" class="btn-close" (click)="close()" aria-label="Close"></button>
+    <button type="button" class="btn-close" (click)="decline()" aria-label="Close"></button>
   </div>
 
   <div class="modal-body py-4 text-center">
@@ -11,8 +11,12 @@
   </div>
 
   <div class="modal-footer border-0 justify-content-center">
-    <button type="button" class="btn px-5" [ngClass]="btnClass" (click)="close()">
-      Entendido
+    <button *ngIf="isConfirm" type="button" class="btn btn-outline-secondary px-4 me-2" (click)="decline()">
+      Cancelar
+    </button>
+
+    <button type="button" class="btn px-5" [ngClass]="btnClass" (click)="confirm()">
+      {{ isConfirm ? 'Confirmar' : 'Entendido' }}
     </button>
   </div>
 </div>

@@ -15,7 +15,7 @@ export class HeroListFilterComponent {
 
   filters = {
   name: '',
-  powerId: 0
+  poderId: null
 };
 
   applyFilters() {
@@ -25,7 +25,7 @@ export class HeroListFilterComponent {
   clearFilters(): void {
   this.filters = {
     name: '',
-    powerId: 0
+    poderId: null
   };
   this.applyFilters();
 }

@@ -45,7 +45,7 @@
         {{ power.superpoder }}
       </button>
 
-      <div *ngIf="heroForm.value.powers.length === 0" class="text-muted small w-100 text-center py-2">
+      <div *ngIf="!hasPower" class="text-muted small w-100 text-center py-2">
         Selecione pelo menos um poder acima.
       </div>
     </div>

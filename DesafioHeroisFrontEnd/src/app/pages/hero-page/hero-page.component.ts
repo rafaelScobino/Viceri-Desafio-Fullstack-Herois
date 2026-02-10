@@ -1,11 +1,13 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { HeroFormComponent } from "./components/hero-form/hero-form.component";
-import { HeroService } from '../../services/hero.service';
+import { HeroiService } from '../../services/heroi/heroi.service';
 import { FeedbackModalService } from '../../shared/feedback-modal/feedback-modal.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Heroi } from '../../models/heroi';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
+import { Superpoder } from '../../models/superpoder';
+import { SuperpoderService } from '../../services/superpoder/superpoder.service';
 
 
 @Component({
@@ -21,10 +23,12 @@ export class HeroPageComponent implements OnInit, AfterViewInit, OnDestroy {
   private routeSub?: Subscription;
   hero?: Heroi;
   isEdit = false;
-
+  powerList: Superpoder[] = [];
+  isFormValid:boolean = false;
 
   constructor(
-    private heroService: HeroService,
+    private heroService: HeroiService,
+    private superpoderService: SuperpoderService,
     private feedbackService: FeedbackModalService,
     private router: Router,
     private route: ActivatedRoute,
@@ -32,13 +36,15 @@ export class HeroPageComponent implements OnInit, AfterViewInit, OnDestroy {
   ) {}
 
  ngOnInit(): void {
-    this.routeSub = this.route.paramMap.subscribe(params => {
-      const id = params.get('id');
-      if (id) {
-        this.isEdit = true;
-        this.loadHeroData(id);
-      }
-    });
+  this.loadPowers();
+
+  this.routeSub = this.route.paramMap.subscribe(params => {
+    const id = params.get('id');
+    if (id) {
+      this.isEdit = true;
+      this.loadHeroData(id);
+    }
+  });
   }
 
   ngAfterViewInit() {
@@ -49,10 +55,22 @@ export class HeroPageComponent implements OnInit, AfterViewInit, OnDestroy {
     this.routeSub?.unsubscribe();
   }
 
+  private loadPowers(): void {
+  this.superpoderService.getAll().subscribe({
+    next: (powers) => {
+      this.powerList = powers;
+    },
+    error: () => this.feedbackService.showError('Erro ao carregar lista de poderes.')
+  });
+}
+
   private loadHeroData(id: number | string): void {
     this.heroService.getById(id).subscribe({
       next: (hero: Heroi) => {
-        this.heroForm.fillForm(hero);
+      setTimeout(() => {
+        this.hero = hero;
+        this.cdRef.detectChanges();
+      });
       },
       error: (err) => {
         this.feedbackService.showError('Heroi não encontrado!');
@@ -61,23 +79,61 @@ export class HeroPageComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
+  // saveHero() {
+  // const data = this.heroForm.save();
+  // if (!data) return;
+  // console.log(data)
+  // const payload = Heroi.mapOutput(data);
+
+  // console.log(data,payload)
+
+  //   this.heroService.create(payload).subscribe({
+  //     next: () => {
+  //       this.feedbackService.showSuccess('Herói cadastrado com sucesso!');
+  //       this.router.navigate(['/herois']);
+  //     },
+  //     error: (err: any) => {
+  //       console.error(err);
+  //       this.feedbackService.showError('Ocorreu um erro ao salvar o herói. Verifique os dados.');
+  //     }
+  //   });
+  // }
+
+
   saveHero() {
   const data = this.heroForm.save();
   if (!data) return;
+
   const payload = Heroi.mapOutput(data);
 
-
-    this.heroService.create(data).subscribe({
+  if (this.isEdit && this.hero) {
+    this.heroService.update(this.hero.id, payload).subscribe({
+      next: () => {
+        this.feedbackService.showSuccess('Herói atualizado com sucesso!');
+        this.router.navigate(['/herois']);
+      },
+      error: (err) => {
+        const errorMessage = err.error?.mensagem || 'Erro ao atualizar herói.';
+        this.feedbackService.showError(errorMessage);
+        console.error(err);
+      }
+    });
+  } else {
+    // No POST (Cadastro)
+    this.heroService.create(payload).subscribe({
       next: () => {
         this.feedbackService.showSuccess('Herói cadastrado com sucesso!');
         this.router.navigate(['/herois']);
       },
-      error: (err: any) => {
+      error: (err) => {
+        const errorMessage = err.error?.mensagem || 'Erro ao cadastrar herói.';
+        this.feedbackService.showError(errorMessage);
         console.error(err);
-        this.feedbackService.showError('Ocorreu um erro ao salvar o herói. Verifique os dados.');
       }
     });
   }
+}
+
 
   cancel() {
     this.router.navigate(['/herois']);
@@ -87,7 +143,9 @@ export class HeroPageComponent implements OnInit, AfterViewInit, OnDestroy {
     return (!!this.hero && !!this.isEdit) || !this.isEdit
   }
 
-  formInvalid(){
-    return this.heroForm?.heroForm?.invalid
-  }
+  handleStatusChange(valid: boolean) {
+  this.isFormValid = valid;
+  this.cdRef.detectChanges();
+}
+
 }

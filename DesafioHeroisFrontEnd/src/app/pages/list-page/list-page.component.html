@@ -11,7 +11,9 @@
     <ng-container *ngIf="heroes && heroes.length > 0; else noResult">
       <app-hero-list
         [heroes]="heroes"
-        (onViewHero)="heroDetail($event)">
+        (onView)="heroDetail($event)"
+  (onEdit)="editHero($event)"
+  (onDelete)="deleteHero($event)">
       </app-hero-list>
     </ng-container>
   </div>
@@ -25,13 +27,13 @@
           </div>
           <h3 class="fw-bold h4">Nenhum herói encontrado</h3>
           <p class="text-muted">
-            Não encontramos nenhum herói, tente cadastrar um novo ou reiniciar página.
+            Não encontramos nenhum herói, tente cadastrar um novo ou limpar os filtros utilizados.
           </p>
 
           <div class="d-flex gap-2 justify-content-center mt-4">
-            <!-- <button type="button" class="btn btn-outline-secondary px-4" (click)="hasResult()">
+            <button type="button" class="btn btn-outline-secondary px-4" (click)="noResultFilter()">
               Limpar Filtros
-            </button> -->
+            </button>
 
             <a routerLink="/heroi/cadastro" class="btn btn-primary px-4">
               <i class="bi bi-plus-lg me-1"></i> Novo Herói

@@ -1,7 +1,7 @@
 import { Component, ElementRef, TemplateRef, ViewChild } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Heroi } from '../../models/heroi';
-import { HeroService } from '../../services/hero.service';
+import { HeroiService } from '../../services/heroi/heroi.service';
 
 
 @Component({
@@ -18,7 +18,7 @@ export class HeroModalComponent {
 
 constructor(
   private modalService: BsModalService,
-  private heroService: HeroService
+  private heroService: HeroiService
 ) {}
 
  open(heroId: number) {
@@ -28,6 +28,7 @@ constructor(
     this.heroService.getById(heroId).subscribe({
       next: (heroData) => {
         this.hero = Heroi.map(heroData);
+        console.log(this.hero)
         this.modalRef = this.modalService.show(this.heroTemplate, {
           class: 'modal-lg modal-dialog-centered',
           animated: true

@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { SUPERPODERES_MOCK } from '../../../list-page/list-page.component';
 import { Heroi } from '../../../../models/heroi';
+import { startWith, Subscription } from 'rxjs';
+import { Superpoder } from '../../../../models/superpoder';
 
 @Component({
   selector: 'app-hero-form',
@@ -13,12 +14,19 @@ import { Heroi } from '../../../../models/heroi';
 })
 export class HeroFormComponent {
 heroForm!: FormGroup;
-powerList = SUPERPODERES_MOCK;
+@Input() powerList: Superpoder[] = [];;
+@Input() set initialData(value: Heroi | undefined) {
+  if (value) {
+    this.fillForm(value);
+  }
+}
 
-  constructor(private fb: FormBuilder) {}
+@Output() onStatusChange = new EventEmitter<boolean>();
 
-  ngOnInit(): void {
-    this.heroForm = this.fb.group({
+private heroSubscription?: Subscription;
+
+  constructor(private fb: FormBuilder) {
+      this.heroForm = this.fb.group({
       nome: ['', [Validators.required, Validators.minLength(3)]],
       nomeHeroi: ['', Validators.required],
       dataNascimento: ['', Validators.required],
@@ -28,13 +36,28 @@ powerList = SUPERPODERES_MOCK;
     });
   }
 
+ngOnInit(): void {
+  this.heroSubscription = this.heroForm.statusChanges
+    .pipe(startWith(this.heroForm.status))
+    .subscribe(() => {
+      this.onStatusChange.emit(this.heroForm.valid);
+    });
+}
+
+ngOnDestroy() {
+  this.heroSubscription?.unsubscribe();
+}
 
   get formData() {
-    return this.heroForm.value;
+    return this.heroForm?.value;
   }
 
   get isValid() {
-    return this.heroForm.valid;
+    return this.heroForm?.valid;
+  }
+
+  get hasPower(){
+    return this.heroForm?.value?.heroiSuperpoderes?.length > 0
   }
 
   reset() {
@@ -50,8 +73,9 @@ powerList = SUPERPODERES_MOCK;
   }
 
   fillForm(hero:Heroi){
+    console.log(hero)
        const powerIds = hero.heroiSuperpoderes?.map(p => p.id) || [];
-
+console.log(powerIds)
         this.heroForm.patchValue({
           nome: hero.nome,
           nomeHeroi: hero.nomeHeroi,

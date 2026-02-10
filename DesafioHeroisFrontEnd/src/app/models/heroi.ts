@@ -1,7 +1,8 @@
+import { Output } from '@angular/core';
 import { Superpoder } from "./superpoder";
 
 export class Heroi {
-  id?: number;
+  id!: number;
   nome: string = '';
   nomeHeroi: string = '';
   dataNascimento: string = '';
@@ -26,13 +27,14 @@ export class Heroi {
   }
 
 
-  static mapOutput(data: any): any {
-    return {
-      ...data,
-      id: data.id || null,
-      heroiSuperpoderes: data.powers.map((powerId: number) => ({
-        powerId: powerId
-      }))
-    };
-  }
+public static mapOutput(data: any): any {
+  return {
+    nome: data.nome,
+    nomeHeroi: data.nomeHeroi,
+    dataNascimento: data.dataNascimento,
+    altura: data.altura,
+    peso: data.peso,
+    heroiSuperpoderesIds: data.heroiSuperpoderes ? [...data.heroiSuperpoderes] : []
+  };
+}
 }

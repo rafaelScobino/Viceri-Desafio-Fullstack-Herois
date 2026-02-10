@@ -1,11 +1,13 @@
 import { Component, ViewChild } from '@angular/core';
 import { HeroListComponent } from "./components/hero-list/hero-list.component";
 import { HeroListFilterComponent } from "./components/hero-list-filter/hero-list-filter.component";
-import { HeroService } from '../../services/hero.service';
+import { HeroiService } from '../../services/heroi/heroi.service';
 import { CommonModule } from '@angular/common';
 import { FeedbackModalService } from '../../shared/feedback-modal/feedback-modal.service';
 import { SharedModule } from '../../shared/shared.module';
 import { HeroModalComponent } from '../../shared/hero-modal/hero-modal.component';
+import { SuperpoderService } from '../../services/superpoder/superpoder.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-list-page',
@@ -19,12 +21,14 @@ export class ListPageComponent {
 @ViewChild('HeroModalComponent') modalHero!: HeroModalComponent;
 @ViewChild('heroFilter') heroFilter!: HeroListFilterComponent;
 
-  heroes: any[] = HEROIS_MOCK;
-  powerList: any[] = SUPERPODERES_MOCK;
+  heroes: any[] = [];
+  powerList: any[] = [];
 
   constructor(
-    private heroService: HeroService,
-    private feedbackService: FeedbackModalService
+    private heroService: HeroiService,
+    private superpoderService: SuperpoderService,
+    private feedbackService: FeedbackModalService,
+    private router: Router
 
   ) {}
 
@@ -33,20 +37,23 @@ export class ListPageComponent {
   }
 
   getHeros() {
-    this.heroService.listAll().subscribe(res => {
+    this.heroService.getAll().subscribe(res => {
       this.heroes = res;
+       console.log(this.heroes)
     });
 
-    this.heroService.listPowers().subscribe(res => this.powerList = res);
+    this.superpoderService.getAll().subscribe(res => this.powerList = res);
   }
 
   filter(event: any) {
-   this.heroService.listFiltered(event.name, event.powerId)
+   this.heroService.getAllFiltered(event.name, event.poderId)
     .subscribe({
       next: (data) => {
         this.heroes = data;
+        console.log(this.heroes)
       },
       error: (err) => {
+        this.heroes=[]
         console.error('Error fetching heroes', err);
         this.feedbackService.showError('Erro ao carregar a lista filtrada.');
       }
@@ -56,69 +63,39 @@ export class ListPageComponent {
   heroDetail(hero: any) {
     this.modalHero.open(hero);
   }
+  editHero(id: number) {
+
+    this.router.navigate(['/heroi/edicao', id]);
+  }
 
   hasResult(){
     return !!this.heroes && this.heroes?.length > 0;
   }
 
-  noResult(){
+deleteHero(id: number) {
+    this.feedbackService.showConfirm('Atenção!', 'Deseja realmente remover este herói do esquadrão?')
+      .subscribe({
+        next: (confirmed) => {
+          if (confirmed) {
+            this.executeDelete(id);
+          }
+        }
+      });
+  }
+
+private executeDelete(id: number) {
+  this.heroService.delete(id).subscribe({
+    next: () => {
+       this.heroes = this.heroes.filter(h => h.id !== id);
+       this.feedbackService.showSuccess('Removido com sucesso');
+    },
+    error: () => this.feedbackService.showError('Erro ao deletar')
+  });
+}
+
+  noResultFilter(){
     this.heroFilter.clearFilters()
   }
 
 }
 
-export const SUPERPODERES_MOCK = [
-  { id: 1, superpoder: 'Voo' },
-  { id: 2, superpoder: 'Super Força' },
-  { id: 3, superpoder: 'Invisibilidade' },
-  { id: 4, superpoder: 'Telepatia' },
-  { id: 5, superpoder: 'Velocidade' }
-];
-
-export const HEROIS_MOCK = [
-  {
-    id: 1,
-    nome: 'Bruce Wayne',
-    nomeHeroi: 'Batman',
-    dataNascimento: '1939-05-27',
-    altura: 1.88,
-    peso: 95.0,
-    heroiSuperpoderes: [
-      { id: 2, superpoder: 'Super Força' }
-    ]
-  },
-  {
-    id: 2,
-    nome: 'Clark Kent',
-    nomeHeroi: 'Superman',
-    dataNascimento: '1938-04-18',
-    altura: 1.91,
-    peso: 107.0,
-    heroiSuperpoderes: [{ id: 1, superpoder: 'Voo' } ,
-     { id: 2, superpoder: 'Super Força' }
-    ]
-  },
-  {
-    id: 3,
-    nome: 'Diana Prince',
-    nomeHeroi: 'Mulher Maravilha',
-    dataNascimento: '1941-10-21',
-    altura: 1.83,
-    peso: 75.0,
-    heroiSuperpoderes: [
-    { id: 1, superpoder: 'Voo' },
-      { id: 2, superpoder: 'Super Força' }
-    ]
-  },
-  {
-    id: 4,
-    nome: 'Barry Allen',
-    nomeHeroi: 'Flash',
-    dataNascimento: '1956-01-01',
-    altura: 1.80,
-    peso: 80.0,
-    heroiSuperpoderes: [
-  { id: 5, superpoder: 'Velocidade' }
-    ]
-  }
-];
