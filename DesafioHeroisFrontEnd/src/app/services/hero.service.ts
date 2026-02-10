@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
-import { Hero } from '../models/hero';
-import { Power } from '../models/power';
+import { Heroi } from '../models/heroi';
+import { Superpoder } from '../models/superpoder';
 
 
 @Injectable({
@@ -15,41 +15,41 @@ export class HeroService {
   constructor(private http: HttpClient) { }
 
 
-  listAll(): Observable<Hero[]> {
+  listAll(): Observable<Heroi[]> {
     return this.http.get<any[]>(`${this.hostApi}/Hero`).pipe(
-      map(data => Hero.mapList(data))
+      map(data => Heroi.mapList(data))
     );
   }
 
 
-  getById(id: number | string): Observable<Hero> {
+  getById(id: number | string): Observable<Heroi> {
     return this.http.get<any>(`${this.hostApi}/Hero/${id}`).pipe(
-      map(data => Hero.map(data))
+      map(data => Heroi.map(data))
     );
   }
 
 
-  listPowers(): Observable<Power[]> {
-    return this.http.get<Power[]>(`${this.hostApi}/Superpower`);
+  listPowers(): Observable<Superpoder[]> {
+    return this.http.get<Superpoder[]>(`${this.hostApi}/Superpower`);
   }
 
-listFiltered(name?: string, powerId?: number): Observable<Hero[]> {
+listFiltered(name?: string, powerId?: number): Observable<Heroi[]> {
   let params = new HttpParams();
 
   if (name) {
-    params = params.set('name', name);
+    params = params.set('nome', name);
   }
 
   if (powerId && powerId > 0) {
     params = params.set('powerId', powerId.toString());
   }
 
-  return this.http.get<Hero[]>(`${this.hostApi}/Hero`, { params }).pipe(
-    map(data => Hero.mapList(data))
+  return this.http.get<Heroi[]>(`${this.hostApi}/Hero`, { params }).pipe(
+    map(data => Heroi.mapList(data))
   );
 }
 
-  create(heroData: any): Observable<Hero> {
+  create(heroData: any): Observable<Heroi> {
     return this.http.post<any>(`${this.hostApi}/Hero`, heroData);
   }
 

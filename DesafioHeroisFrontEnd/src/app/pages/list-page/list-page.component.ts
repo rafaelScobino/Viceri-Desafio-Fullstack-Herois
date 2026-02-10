@@ -68,57 +68,57 @@ export class ListPageComponent {
 }
 
 export const SUPERPODERES_MOCK = [
-  { id: 1, name: 'Voo' },
-  { id: 2, name: 'Super Força' },
-  { id: 3, name: 'Invisibilidade' },
-  { id: 4, name: 'Telepatia' },
-  { id: 5, name: 'Velocidade' }
+  { id: 1, superpoder: 'Voo' },
+  { id: 2, superpoder: 'Super Força' },
+  { id: 3, superpoder: 'Invisibilidade' },
+  { id: 4, superpoder: 'Telepatia' },
+  { id: 5, superpoder: 'Velocidade' }
 ];
 
 export const HEROIS_MOCK = [
   {
     id: 1,
-    name: 'Bruce Wayne',
-    heroName: 'Batman',
-    birth: '1939-05-27',
-    height: 1.88,
-    weight: 95.0,
-    heroPowers: [
-      { id: 2, name: 'Super Força' }
+    nome: 'Bruce Wayne',
+    nomeHeroi: 'Batman',
+    dataNascimento: '1939-05-27',
+    altura: 1.88,
+    peso: 95.0,
+    heroiSuperpoderes: [
+      { id: 2, superpoder: 'Super Força' }
     ]
   },
   {
     id: 2,
-    name: 'Clark Kent',
-    heroName: 'Superman',
-    birth: '1938-04-18',
-    height: 1.91,
-    weight: 107.0,
-    heroPowers: [{ id: 1, name: 'Voo' } ,
-     { id: 2, name: 'Super Força' }
+    nome: 'Clark Kent',
+    nomeHeroi: 'Superman',
+    dataNascimento: '1938-04-18',
+    altura: 1.91,
+    peso: 107.0,
+    heroiSuperpoderes: [{ id: 1, superpoder: 'Voo' } ,
+     { id: 2, superpoder: 'Super Força' }
     ]
   },
   {
     id: 3,
-    name: 'Diana Prince',
-    heroName: 'Mulher Maravilha',
-    birth: '1941-10-21',
-    height: 1.83,
-    weight: 75.0,
-    heroPowers: [
-    { id: 1, name: 'Voo' },
-      { id: 2, name: 'Super Força' }
+    nome: 'Diana Prince',
+    nomeHeroi: 'Mulher Maravilha',
+    dataNascimento: '1941-10-21',
+    altura: 1.83,
+    peso: 75.0,
+    heroiSuperpoderes: [
+    { id: 1, superpoder: 'Voo' },
+      { id: 2, superpoder: 'Super Força' }
     ]
   },
   {
     id: 4,
-    name: 'Barry Allen',
-    heroName: 'Flash',
-    birth: '1956-01-01',
-    height: 1.80,
-    weight: 80.0,
-    heroPowers: [
-  { id: 5, name: 'Velocidade' }
+    nome: 'Barry Allen',
+    nomeHeroi: 'Flash',
+    dataNascimento: '1956-01-01',
+    altura: 1.80,
+    peso: 80.0,
+    heroiSuperpoderes: [
+  { id: 5, superpoder: 'Velocidade' }
     ]
   }
 ];

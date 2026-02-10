@@ -10,11 +10,11 @@
     </thead>
     <tbody>
       <tr *ngFor="let hero of heroes">
-  <td><strong>{{ hero.heroName }}</strong></td>
-  <td>{{ hero.name }}</td>
+  <td><strong>{{ hero.nomeHeroi }}</strong></td>
+  <td>{{ hero.nome }}</td>
   <td>
-    <span *ngFor="let p of hero.heroPowers" class="badge bg-info text-dark me-1">
-      {{ p.name }}
+    <span *ngFor="let p of hero.heroiSuperpoderes" class="badge bg-info text-dark me-1">
+      {{ p.superpoder }}
     </span>
   </td>
   <td class="text-center">

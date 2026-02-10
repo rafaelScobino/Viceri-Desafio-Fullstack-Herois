@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SUPERPODERES_MOCK } from '../../../list-page/list-page.component';
-import { Hero } from '../../../../models/hero';
+import { Heroi } from '../../../../models/heroi';
 
 @Component({
   selector: 'app-hero-form',
@@ -19,12 +19,12 @@ powerList = SUPERPODERES_MOCK;
 
   ngOnInit(): void {
     this.heroForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(3)]],
-      heroName: ['', Validators.required],
-      birth: ['', Validators.required],
-      height: [null, [Validators.required, Validators.min(0.1)]],
-      weight: [null, [Validators.required, Validators.min(1)]],
-      powers: [[], Validators.required]
+      nome: ['', [Validators.required, Validators.minLength(3)]],
+      nomeHeroi: ['', Validators.required],
+      dataNascimento: ['', Validators.required],
+      altura: [null, [Validators.required, Validators.min(0.1)]],
+      peso: [null, [Validators.required, Validators.min(1)]],
+      heroiSuperpoderes: [[], Validators.required]
     });
   }
 
@@ -49,21 +49,21 @@ powerList = SUPERPODERES_MOCK;
   return this.heroForm.value;
   }
 
-  fillForm(hero:Hero){
-       const powerIds = hero.heroPowers?.map(p => p.id) || [];
+  fillForm(hero:Heroi){
+       const powerIds = hero.heroiSuperpoderes?.map(p => p.id) || [];
 
         this.heroForm.patchValue({
-          nome: hero.name,
-          nomeHeroi: hero.heroName,
-          dataNascimento: hero.birth,
-          altura: hero.height,
-          peso: hero.weight,
-          powers: powerIds
+          nome: hero.nome,
+          nomeHeroi: hero.nomeHeroi,
+          dataNascimento: hero.dataNascimento,
+          altura: hero.altura,
+          peso: hero.peso,
+          heroiSuperpoderes: powerIds
         });
   }
 
   togglePower(id: number) {
-    const selected = [...this.heroForm.value.powers];
+    const selected = [...this.heroForm.value.heroiSuperpoderes];
     const index = selected.indexOf(id);
 
     if (index > -1) {
@@ -72,11 +72,11 @@ powerList = SUPERPODERES_MOCK;
       selected.push(id);
     }
 
-    this.heroForm.get('powers')?.setValue(selected);
-    this.heroForm.get('powers')?.markAsTouched();
+    this.heroForm.get('heroiSuperpoderes')?.setValue(selected);
+    this.heroForm.get('heroiSuperpoderes')?.markAsTouched();
   }
 
   isSelected(id: number): boolean {
-    return this.heroForm.value.powers?.includes(id);
+    return this.heroForm.value.heroiSuperpoderes?.includes(id);
   }
 }

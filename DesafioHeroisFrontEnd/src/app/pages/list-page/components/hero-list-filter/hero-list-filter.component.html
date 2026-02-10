@@ -14,7 +14,7 @@
         <label class="form-label fw-bold text-secondary">Superpoder</label>
         <select class="form-select" [(ngModel)]="filters.powerId">
           <option [value]="0">Todos os poderes</option>
-          <option *ngFor="let p of powers" [value]="p.id">{{ p.name }}</option>
+          <option *ngFor="let p of powers" [value]="p.id">{{ p.nome }}</option>
         </select>
       </div>
 

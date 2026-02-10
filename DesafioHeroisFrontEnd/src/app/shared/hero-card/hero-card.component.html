@@ -4,8 +4,8 @@
       <div class="display-1 text-primary mb-2">
         <i class="bi bi-person-badge"></i>
       </div>
-      <h2 class="fw-bold mb-0">{{ hero.heroName }}</h2>
-      <span class="text-muted fs-5">{{ hero.name }}</span>
+      <h2 class="fw-bold mb-0">{{ hero?.nomeHeroi }}</h2>
+      <span class="text-muted fs-5">{{ hero?.nome }}</span>
     </div>
 
     <hr class="text-muted">
@@ -15,27 +15,27 @@
         <div class="mb-3">
           <label class="small text-uppercase fw-bold text-secondary d-block mb-1">Superpoderes</label>
           <div class="d-flex flex-wrap gap-1">
-            <span *ngFor="let p of hero.heroPowers" class="badge rounded-pill bg-primary">
-              <i class="bi bi-lightning-fill me-1"></i>{{ p.power.name }}
+            <span *ngFor="let p of hero?.heroiSuperpoderes" class="badge rounded-pill bg-primary">
+              <i class="bi bi-lightning-fill me-1"></i>{{ p?.superpoder }}
             </span>
           </div>
         </div>
 
         <div class="mb-3">
           <label class="small text-uppercase fw-bold text-secondary d-block mb-1">Nascimento</label>
-          <p class="fs-6"><i class="bi bi-calendar3 me-2"></i>{{ hero.birth | date:'dd/MM/yyyy' }}</p>
+          <p class="fs-6"><i class="bi bi-calendar3 me-2"></i>{{ hero?.dataNascimento | date:'dd/MM/yyyy' }}</p>
         </div>
       </div>
 
       <div class="col-md-6">
         <div class="mb-3">
           <label class="small text-uppercase fw-bold text-secondary d-block mb-1">Altura</label>
-          <p class="fs-6"><i class="bi bi-arrows-expand me-2"></i>{{ hero.height }} m</p>
+          <p class="fs-6"><i class="bi bi-arrows-expand me-2"></i>{{ hero?.altura }} m</p>
         </div>
 
         <div class="mb-3">
           <label class="small text-uppercase fw-bold text-secondary d-block mb-1">Peso</label>
-          <p class="fs-6"><i class="bi bi-speedometer2 me-2"></i>{{ hero.weight }} kg</p>
+          <p class="fs-6"><i class="bi bi-speedometer2 me-2"></i>{{ hero?.peso }} kg</p>
         </div>
       </div>
     </div>

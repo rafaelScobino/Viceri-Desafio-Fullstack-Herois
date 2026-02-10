@@ -1,6 +1,6 @@
 import { Component, ElementRef, TemplateRef, ViewChild } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { Hero } from '../../models/hero';
+import { Heroi } from '../../models/heroi';
 import { HeroService } from '../../services/hero.service';
 
 
@@ -12,7 +12,7 @@ import { HeroService } from '../../services/hero.service';
 export class HeroModalComponent {
 
 @ViewChild('heroTemplate') heroTemplate!: TemplateRef<any>;
-  hero?: Hero | null;
+  hero?: Heroi | null;
 
  modalRef?: BsModalRef;
 
@@ -27,7 +27,7 @@ constructor(
 
     this.heroService.getById(heroId).subscribe({
       next: (heroData) => {
-        this.hero = Hero.map(heroData);
+        this.hero = Heroi.map(heroData);
         this.modalRef = this.modalService.show(this.heroTemplate, {
           class: 'modal-lg modal-dialog-centered',
           animated: true
@@ -65,20 +65,20 @@ close() {
 
 export const HEROI_DETALHE_MOCK = {
   id: 10,
-  name: 'Peter Parker',
-  heroName: 'Homem-Aranha',
-  birth: '2001-08-10T00:00:00',
-  height: 1.78,
-  weight: 74.5,
-  heroPowers: [
+  nome: 'Peter Parker',
+  nomeHeroi: 'Homem-Aranha',
+  dataNascimento: '2001-08-10T00:00:00',
+  altura: 1.78,
+  peso: 74.5,
+  heroiSuperpoderes: [
     {
-      power: { id: 1, name: 'Sentido Aranha' }
+      power: { id: 1, nome: 'Sentido Aranha' }
     },
     {
-      power: { id: 2, name: 'Agilidade Sobre-humana' }
+      power: { id: 2, nome: 'Agilidade Sobre-humana' }
     },
     {
-      power: { id: 3, name: 'Lançador de Teia' }
+      power: { id: 3, nome: 'Lançador de Teia' }
     }
   ]
 };

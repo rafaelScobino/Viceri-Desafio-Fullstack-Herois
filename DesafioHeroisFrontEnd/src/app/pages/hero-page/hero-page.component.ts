@@ -3,7 +3,7 @@ import { HeroFormComponent } from "./components/hero-form/hero-form.component";
 import { HeroService } from '../../services/hero.service';
 import { FeedbackModalService } from '../../shared/feedback-modal/feedback-modal.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Hero } from '../../models/hero';
+import { Heroi } from '../../models/heroi';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 
@@ -19,7 +19,7 @@ export class HeroPageComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('heroFormRef') heroForm! : HeroFormComponent;
 
   private routeSub?: Subscription;
-  hero?: Hero;
+  hero?: Heroi;
   isEdit = false;
 
 
@@ -51,7 +51,7 @@ export class HeroPageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private loadHeroData(id: number | string): void {
     this.heroService.getById(id).subscribe({
-      next: (hero: Hero) => {
+      next: (hero: Heroi) => {
         this.heroForm.fillForm(hero);
       },
       error: (err) => {
@@ -64,7 +64,7 @@ export class HeroPageComponent implements OnInit, AfterViewInit, OnDestroy {
   saveHero() {
   const data = this.heroForm.save();
   if (!data) return;
-  const payload = Hero.mapOutput(data);
+  const payload = Heroi.mapOutput(data);
 
 
     this.heroService.create(data).subscribe({

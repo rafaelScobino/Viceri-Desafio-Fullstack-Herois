@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FeedbackModalService } from '../../../../shared/feedback-modal/feedback-modal.service';
-import { Hero } from '../../../../models/hero';
+import { Heroi } from '../../../../models/heroi';
 
 @Component({
   selector: 'app-hero-list',
@@ -11,7 +11,7 @@ import { Hero } from '../../../../models/hero';
   styleUrl: './hero-list.component.css'
 })
 export class HeroListComponent {
-  @Input() heroes?: Hero[]
+  @Input() heroes?: Heroi[]
   @Output() onViewHero = new EventEmitter<any>();
 
   constructor(private feedbackService: FeedbackModalService){
