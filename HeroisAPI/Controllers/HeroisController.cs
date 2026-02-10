@@ -56,7 +56,7 @@ namespace HeroApp.Api.Controllers {
                 Id = h.Id,
                 Nome = h.Nome,
                 NomeHeroi = h.NomeHeroi,
-                Superpoderes = h.HeroisSuperpoderes
+                HeroiSuperpoderes = h.HeroisSuperpoderes
                     .Select(hs => hs.Superpoder!.Nome)
                     .ToList()
             });
@@ -90,11 +90,11 @@ namespace HeroApp.Api.Controllers {
                 DataNascimento = heroi.DataNascimento,
                 Altura = heroi.Altura,
                 Peso = heroi.Peso,
-                Superpoderes = heroi.HeroisSuperpoderes
+                HeroiSuperpoderes = heroi.HeroisSuperpoderes
             .Select(hs => new SuperpoderDto
             {
                 Id = hs.SuperpoderId,
-                Nome = hs.Superpoder!.Nome,
+                Superpoder = hs.Superpoder!.Nome,
                 Descricao = hs.Superpoder!.Descricao
             })
     .ToList()
@@ -120,10 +120,10 @@ namespace HeroApp.Api.Controllers {
             ;
 
             var poderesExistentesCount = await _context.Superpoderes
-        .Where(s => dto.SuperpoderesIds.Contains(s.Id))
+        .Where(s => dto.HeroiSuperpoderesIds.Contains(s.Id))
         .CountAsync();
 
-            if (poderesExistentesCount != dto.SuperpoderesIds.Count)
+            if (poderesExistentesCount != dto.HeroiSuperpoderesIds.Count)
             {
                 return BadRequest(new { mensagem = "Um ou mais IDs de superpoderes informados não existem." });
             }
@@ -136,7 +136,7 @@ namespace HeroApp.Api.Controllers {
                 Altura = dto.Altura,
                 Peso = dto.Peso,
 
-                HeroisSuperpoderes = dto.SuperpoderesIds.Select(id => new HeroiSuperpoder
+                HeroisSuperpoderes = dto.HeroiSuperpoderesIds.Select(id => new HeroiSuperpoder
                 {
                     SuperpoderId = id
                 }).ToList()
@@ -183,10 +183,10 @@ namespace HeroApp.Api.Controllers {
             ;
 
             var poderesExistentesCount = await _context.Superpoderes
-        .Where(s => dto.SuperpoderesIds.Contains(s.Id))
+        .Where(s => dto.HeroiSuperpoderesIds.Contains(s.Id))
         .CountAsync();
 
-            if (poderesExistentesCount != dto.SuperpoderesIds.Count)
+            if (poderesExistentesCount != dto.HeroiSuperpoderesIds.Count)
             {
                 return BadRequest(new { mensagem = "Um ou mais IDs de superpoderes informados não existem." });
             }
@@ -198,7 +198,7 @@ namespace HeroApp.Api.Controllers {
             heroiExistente.Peso = dto.Peso;
 
             heroiExistente.HeroisSuperpoderes.Clear();
-            heroiExistente.HeroisSuperpoderes = dto.SuperpoderesIds.Select(pId => new HeroiSuperpoder
+            heroiExistente.HeroisSuperpoderes = dto.HeroiSuperpoderesIds.Select(pId => new HeroiSuperpoder
             {
                 SuperpoderId = pId,
                 HeroiId = id

@@ -26,7 +26,7 @@ namespace HeroApp.Api.Controllers{
 				.Select(p => new SuperpoderDto
 				{
 					Id = p.Id,
-					Nome = p.Nome,
+                    Superpoder = p.Nome,
 					Descricao = p.Descricao
 				})
 				.ToListAsync();

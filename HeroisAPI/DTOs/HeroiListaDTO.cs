@@ -6,6 +6,6 @@ namespace HeroApp.Api.DTOs
         public string Nome { get; set; } = string.Empty;
         public string NomeHeroi { get; set; } = string.Empty;
         
-        public List<string> Superpoderes { get; set; } = new();
+        public List<string> HeroiSuperpoderes { get; set; } = new();
     }
 }

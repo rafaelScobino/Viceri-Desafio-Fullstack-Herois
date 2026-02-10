@@ -21,7 +21,7 @@ namespace HeroApp.Api.DTOs
 
         [Required]
         [MinLength(1, ErrorMessage = "Selecione pelo menos um superpoder")]
-        public List<int> SuperpoderesIds { get; set; } = new();
+        public List<int> HeroiSuperpoderesIds { get; set; } = new();
     }
 
 }

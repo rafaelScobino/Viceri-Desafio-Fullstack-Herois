@@ -11,7 +11,7 @@ namespace HeroApp.Api.DTOs
         public double Altura { get; set; }
         public double Peso { get; set; }
 
-        public List<SuperpoderDto> Superpoderes { get; set; } = new();
+        public List<SuperpoderDto> HeroiSuperpoderes { get; set; } = new();
     }
 }
   
