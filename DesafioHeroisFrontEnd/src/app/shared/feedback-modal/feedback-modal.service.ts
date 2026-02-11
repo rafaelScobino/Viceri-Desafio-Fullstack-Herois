@@ -28,7 +28,7 @@ export class FeedbackModalService {
       icon: 'bi bi-question-circle-fill',
       textColor: 'text-primary',
       btnClass: 'btn-primary',
-      isConfirm: true // Nova flag para mostrar o botão "Cancelar"
+      isConfirm: true
     };
 
     this.bsModalRef = this.modalService.show(FeedbackModalComponent, {

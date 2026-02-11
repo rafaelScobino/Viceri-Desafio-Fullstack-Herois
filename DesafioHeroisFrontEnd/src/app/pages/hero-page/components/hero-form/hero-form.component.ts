@@ -73,9 +73,7 @@ ngOnDestroy() {
   }
 
   fillForm(hero:Heroi){
-    console.log(hero)
        const powerIds = hero.heroiSuperpoderes?.map(p => p.id) || [];
-console.log(powerIds)
         this.heroForm.patchValue({
           nome: hero.nome,
           nomeHeroi: hero.nomeHeroi,

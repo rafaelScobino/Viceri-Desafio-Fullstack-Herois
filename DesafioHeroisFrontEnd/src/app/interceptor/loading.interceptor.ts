@@ -8,7 +8,6 @@ export class LoadingInterceptor implements HttpInterceptor {
   constructor(private loadingService: LoadingService) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    // Não mostra loading para requisições específicas se desejar (ex: logs)
     this.loadingService.show();
 
     return next.handle(req).pipe(

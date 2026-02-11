@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './hero-list-filter.component.css'
 })
 export class HeroListFilterComponent {
-@Input() powers: any[] = []; // Recebe a lista de poderes da API
+@Input() powers: any[] = [];
   @Output() filterEvent = new EventEmitter<any>();
 
   filters = {

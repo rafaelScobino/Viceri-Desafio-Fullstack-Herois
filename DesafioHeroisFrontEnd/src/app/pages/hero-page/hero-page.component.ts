@@ -73,32 +73,12 @@ export class HeroPageComponent implements OnInit, AfterViewInit, OnDestroy {
       });
       },
       error: (err) => {
-        this.feedbackService.showError('Heroi não encontrado!');
-        // this.router.navigate(['/herois']);
+         const errorMessage = err.error?.mensagem || 'Heroi não encontrado!';
+        this.feedbackService.showError(errorMessage);
+        console.error(err);
       }
     });
   }
-
-  // saveHero() {
-  // const data = this.heroForm.save();
-  // if (!data) return;
-  // console.log(data)
-  // const payload = Heroi.mapOutput(data);
-
-  // console.log(data,payload)
-
-  //   this.heroService.create(payload).subscribe({
-  //     next: () => {
-  //       this.feedbackService.showSuccess('Herói cadastrado com sucesso!');
-  //       this.router.navigate(['/herois']);
-  //     },
-  //     error: (err: any) => {
-  //       console.error(err);
-  //       this.feedbackService.showError('Ocorreu um erro ao salvar o herói. Verifique os dados.');
-  //     }
-  //   });
-  // }
-
 
   saveHero() {
   const data = this.heroForm.save();
@@ -119,7 +99,7 @@ export class HeroPageComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     });
   } else {
-    // No POST (Cadastro)
+
     this.heroService.create(payload).subscribe({
       next: () => {
         this.feedbackService.showSuccess('Herói cadastrado com sucesso!');

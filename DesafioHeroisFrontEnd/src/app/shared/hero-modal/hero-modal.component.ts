@@ -2,6 +2,7 @@ import { Component, ElementRef, TemplateRef, ViewChild } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Heroi } from '../../models/heroi';
 import { HeroiService } from '../../services/heroi/heroi.service';
+import { FeedbackModalService } from '../feedback-modal/feedback-modal.service';
 
 
 @Component({
@@ -18,24 +19,24 @@ export class HeroModalComponent {
 
 constructor(
   private modalService: BsModalService,
-  private heroService: HeroiService
+  private heroService: HeroiService,
+  private feedbackService: FeedbackModalService,
 ) {}
 
  open(heroId: number) {
-  console.log(heroId)
     if (!heroId) return;
 
     this.heroService.getById(heroId).subscribe({
       next: (heroData) => {
         this.hero = Heroi.map(heroData);
-        console.log(this.hero)
         this.modalRef = this.modalService.show(this.heroTemplate, {
           class: 'modal-lg modal-dialog-centered',
           animated: true
         });
       },
       error: (err) => {
-        console.error('Erro ao buscar detalhes do herói', err);
+        console.error('"Error fetching hero details', err);
+         this.feedbackService.showError(err?.error?.mensagem? err?.error?.mensagem: 'Erro ao buscar detalhes do herói');
       }
     });
   }

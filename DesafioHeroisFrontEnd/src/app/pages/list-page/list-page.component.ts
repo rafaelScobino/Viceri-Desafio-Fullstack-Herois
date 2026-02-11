@@ -37,12 +37,27 @@ export class ListPageComponent {
   }
 
   getHeros() {
-    this.heroService.getAll().subscribe(res => {
-      this.heroes = res;
-       console.log(this.heroes)
+    this.heroService.getAll().subscribe({
+      next: (data) => {
+        this.heroes = data;
+      },
+      error: (err) => {
+        this.heroes=[]
+        const errorMessage = err.error?.mensagem || 'Erro ao carregar a lista';
+        this.feedbackService.showError(errorMessage);
+        console.error(err);
+      }
     });
 
-    this.superpoderService.getAll().subscribe(res => this.powerList = res);
+    this.superpoderService.getAll().subscribe({
+      next: (data) => {
+        this.powerList = data;
+      },
+      error: (err) => {
+        this.powerList=[]
+        console.error('Error fetching powers', err);
+      }
+    });
   }
 
   filter(event: any) {
@@ -50,12 +65,12 @@ export class ListPageComponent {
     .subscribe({
       next: (data) => {
         this.heroes = data;
-        console.log(this.heroes)
       },
       error: (err) => {
         this.heroes=[]
-        console.error('Error fetching heroes', err);
-        this.feedbackService.showError('Erro ao carregar a lista filtrada.');
+        const errorMessage = err.error?.mensagem || 'Erro ao carregar a lista';
+        this.feedbackService.showError(errorMessage);
+        console.error(err);
       }
     });
   }
@@ -86,10 +101,14 @@ deleteHero(id: number) {
 private executeDelete(id: number) {
   this.heroService.delete(id).subscribe({
     next: () => {
-       this.heroes = this.heroes.filter(h => h.id !== id);
+       this.getHeros()
        this.feedbackService.showSuccess('Removido com sucesso');
     },
-    error: () => this.feedbackService.showError('Erro ao deletar')
+      error: (err) => {
+           const errorMessage = err.error?.mensagem || 'Erro ao remover este herói';
+        this.feedbackService.showError(errorMessage);
+        console.error(err);
+      }
   });
 }
 
