@@ -97,7 +97,7 @@ namespace HeroApp.Api.Controllers {
                 Superpoder = hs.Superpoder!.Nome,
                 Descricao = hs.Superpoder!.Descricao
             })
-    .ToList()
+            .ToList()
             };
 
             return Ok(result);
@@ -110,14 +110,12 @@ namespace HeroApp.Api.Controllers {
         public async Task<ActionResult> Post([FromBody] HeroiCadastroDto dto)
         {
 
-            if (await _context.Herois.AnyAsync(h => h.NomeHeroi == dto.NomeHeroi.ToLower()))
-            {
-                return BadRequest(new
-                {
-                    mensagem = "Já existe um herói com esse nome de herói cadastrado!"
-                });
-            }
-            ;
+          var nomeLimpo = dto.NomeHeroi.Trim().ToLower();
+
+if (await _context.Herois.AnyAsync(h => h.NomeHeroi.ToLower().Trim() == nomeLimpo))
+{
+    return BadRequest(new { mensagem = "Já existe um herói com este nome de herói!" });
+};
 
             var poderesExistentesCount = await _context.Superpoderes
         .Where(s => dto.HeroiSuperpoderesIds.Contains(s.Id))
@@ -158,58 +156,73 @@ namespace HeroApp.Api.Controllers {
         }
 
         [HttpPut("{id}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> Put(int id, [FromBody] HeroiCadastroDto dto)
         {
 
-            var heroiExistente = await _context.Herois
-                .Include(h => h.HeroisSuperpoderes)
-                .FirstOrDefaultAsync(h => h.Id == id);
+                var heroiExistente = await _context.Herois
+                    .Include(h => h.HeroisSuperpoderes)
+                        .ThenInclude(hs => hs.Superpoder)
+                    .FirstOrDefaultAsync(h => h.Id == id);
 
-            if (heroiExistente == null)
-            {
-                return NotFound(new { mensagem = "Herói não encontrado." });
-            }
-
-            if (await _context.Herois.AnyAsync(h => h.NomeHeroi.ToLower() == dto.NomeHeroi.ToLower() && h.Id != id))
-            {
-                return BadRequest(new
-                {
-                    mensagem = "Já existe um herói com esse nome de herói cadastrado!"
-                });
-            }
-            ;
-
-            var poderesExistentesCount = await _context.Superpoderes
-        .Where(s => dto.HeroiSuperpoderesIds.Contains(s.Id))
-        .CountAsync();
-
-            if (poderesExistentesCount != dto.HeroiSuperpoderesIds.Count)
-            {
-                return BadRequest(new { mensagem = "Um ou mais IDs de superpoderes informados não existem." });
-            }
-
-            heroiExistente.Nome = dto.Nome;
-            heroiExistente.NomeHeroi = dto.NomeHeroi;
-            heroiExistente.DataNascimento = dto.DataNascimento;
-            heroiExistente.Altura = dto.Altura;
-            heroiExistente.Peso = dto.Peso;
-
-            heroiExistente.HeroisSuperpoderes.Clear();
-            heroiExistente.HeroisSuperpoderes = dto.HeroiSuperpoderesIds.Select(pId => new HeroiSuperpoder
-            {
-                SuperpoderId = pId,
-                HeroiId = id
-            }).ToList();
+                    if (heroiExistente == null)
+                    {
+                        return NotFound(new { mensagem = "Herói não encontrado." });
+                    }
 
 
-            await _context.SaveChangesAsync();
+                    var nomeLimpo = dto.NomeHeroi.Trim().ToLower();
+
+                    if (await _context.Herois.AnyAsync(h => h.NomeHeroi.ToLower().Trim() == nomeLimpo && h.Id != id))
+                    {
+                        return BadRequest(new { mensagem = "Já existe um herói com este nome de herói!" });
+                    };
+                
+
+                    var poderesExistentesCount = await _context.Superpoderes
+                        .Where(s => dto.HeroiSuperpoderesIds.Contains(s.Id))
+                        .CountAsync();
+
+                    if (poderesExistentesCount != dto.HeroiSuperpoderesIds.Count)
+                    {
+                        return BadRequest(new { mensagem = "Um ou mais IDs de superpoderes informados não existem." });
+                    }
+
+                    heroiExistente.Nome = dto.Nome;
+                    heroiExistente.NomeHeroi = dto.NomeHeroi;
+                    heroiExistente.DataNascimento = dto.DataNascimento;
+                    heroiExistente.Altura = dto.Altura;
+                    heroiExistente.Peso = dto.Peso;
+
+                    heroiExistente.HeroisSuperpoderes.Clear();
+                    heroiExistente.HeroisSuperpoderes = dto.HeroiSuperpoderesIds.Select(pId => new HeroiSuperpoder
+                    {
+                        SuperpoderId = pId,
+                        HeroiId = id
+                    }).ToList();
 
 
+                    await _context.SaveChangesAsync();
 
-            return NoContent();
+
+                    var response = new HeroiDetalheDto
+                    {
+                        Id = heroiExistente.Id,
+                        Nome = heroiExistente.Nome,
+                        NomeHeroi = heroiExistente.NomeHeroi,
+                        DataNascimento = heroiExistente.DataNascimento,
+                        Altura = heroiExistente.Altura,
+                        Peso = heroiExistente.Peso,
+                       HeroiSuperpoderes = heroiExistente.HeroisSuperpoderes
+                        .Select(hs => new SuperpoderDto
+                        {
+                            Id = hs.SuperpoderId
+                        })
+                        .ToList()
+                    };
+
+                    return Ok(response);
 
 
         }
